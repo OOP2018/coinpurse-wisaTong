@@ -1,5 +1,8 @@
 package coinpurse;
- 
+
+import java.util.ArrayList;
+import java.util.List;
+
 //TODO import List, ArrayList, and Collections
 // You will use Collections.sort() to sort the coins
 
@@ -8,12 +11,12 @@ package coinpurse;
  *  You can insert coins, withdraw money, check the balance,
  *  and check if the purse is full.
  *  
- *  @author your name
+ *  @author Wisa Powthongchin
  */
 public class Purse {
     /** Collection of objects in the purse. */
-    //TODO declare a List of Coins named "money".
-    
+    private List<Coin> money;
+	
     /** Capacity is maximum number of items the purse can hold.
      *  Capacity is set when the purse is created and cannot be changed.
      */
@@ -24,7 +27,8 @@ public class Purse {
      *  @param capacity is maximum number of coins you can put in purse.
      */
     public Purse( int capacity ) {
-
+    	this.capacity = capacity;
+    	money = new ArrayList<Coin>(capacity);
     }
 
     /**
@@ -32,14 +36,19 @@ public class Purse {
      * This is the number of coins, not their value.
      * @return the number of coins in the purse
      */
-    public int count() { return 0; }
+    public int count() { return money.size(); }
     
     /** 
      *  Get the total value of all items in the purse.
      *  @return the total value of items in the purse.
      */
     public double getBalance() {
-		return 0.0; 
+    	double balance = 0;
+    	
+    	for (Coin coin : money) {
+    		balance += coin.getValue();
+    	}
+		return balance; 
 	}
 
     
@@ -47,9 +56,8 @@ public class Purse {
      * Return the capacity of the coin purse.
      * @return the capacity
      */
-    //TODO write accessor method for capacity. Use Java naming convention.
     public int getCapacity() { 
-		return 0; 
+		return capacity; 
 	}
     
     /** 
@@ -59,7 +67,7 @@ public class Purse {
      *  @return true if purse is full.
      */
     public boolean isFull() {
-        //TODO complete this method. Avoid writing duplicate code (Don't Repeat Yourself).
+    	if(count() >= this.getCapacity()) return true;
         return false;
     }
 
@@ -71,8 +79,10 @@ public class Purse {
      * @return true if coin inserted, false if can't insert
      */
     public boolean insert( Coin coin ) {
-        // if the purse is already full then can't insert anything.
-        //TODO complete the insert method
+    	if(!isFull() && coin.getValue() > 0) {
+    		money.add(coin);
+    		return true;
+    	}
         return false;
     }
     
@@ -106,19 +116,51 @@ public class Purse {
 		// Did we get the full amount?
 		// This code assumes you decrease amount each time you remove a coin.
     	// Your code might use some other variable for the remaining amount to withdraw.
-		if ( amountNeededToWithdraw != 0 )
-		{	
-			// failed. Don't change the contents of the purse.
-			
-		}
+		
+    	if (amount > 0 && amount <= this.getBalance() && this.getBalance() != 0) {
+    		java.util.Collections.sort(money);
+    		
+    		Purse withdraw = new Purse(this.getCapacity());
+    		
+    		for (int i = money.size(); withdraw.getBalance() != amount; i--) {
+    			double possibility = withdraw.getBalance() + money.get(i-1).getValue();
+    			if (possibility <= amount) withdraw.insert(money.get(i-1));
+    			if (i-1 == 0 && withdraw.getBalance() != amount) return null;
+    		}
+    		
+    		Coin[] toRemove = new Coin[withdraw.getCoinList().size()];
+    		withdraw.getCoinList().toArray(toRemove);
+    		this.remove(toRemove);
+    		
+    		return toRemove;
+    	}
 
 		// Success.
 		// Remove the coins you want to withdraw from purse,
 		// and return them as an array.
 		// Use list.toArray( array[] ) to copy a list into an array.
 		// toArray returns a reference to the array itself.
-        return new Coin[0]; //TODO replace this with real code
+        return null; //TODO replace this with real code
 	}
+    
+    /**
+     * Remove set of coins from purse.
+     * This method is reserved for inner use only.
+     * @param remove Array of coins you want to remove from purse.
+     */
+    private void remove(Coin[] remove) {
+    	for (Coin coin : remove) {
+    		money.remove(coin);
+    	}
+    }
+    
+    /**
+     * 
+     * @return List of all Coin in the purse.
+     */
+    private List<Coin> getCoinList() {
+    	return money;
+    }
   
     /** 
      * toString returns a string description of the purse contents.
@@ -126,8 +168,15 @@ public class Purse {
      */
     public String toString() {
         //TODO complete this
-    	return "you forgot to write Purse.toString()";
+    	return money.toString();
     }
+    
+    public static void main(String[] args) {
+		Purse purse = new Purse(10);
+		purse.insert(new Coin(20, "BTC"));
+		System.out.println(purse.toString());
+		purse.withdraw(1);
+	}
 
 }
 //TODO When you finish, there should not be any TODO comments, including this one!

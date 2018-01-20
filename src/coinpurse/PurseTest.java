@@ -176,7 +176,7 @@ public class PurseTest {
 			}
 			// balance should be exactly what we just inserted
 			assertEquals( amount, purse.getBalance(), TOL);
-			// can we withdraw it all?
+			// can we withdraw it all?	
 			Coin[] result = purse.withdraw(amount);
 			String errmsg = String.format("couldn't withdraw %.2f but purse has %s",
 					amount, Arrays.toString(subList.toArray()) );
