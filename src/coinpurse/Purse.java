@@ -96,16 +96,18 @@ public class Purse {
     	if (amount > 0 && amount <= this.getBalance() && this.getBalance() != 0) {
     		java.util.Collections.sort(money);
     		
-    		Purse withdraw = new Purse(this.getCapacity());
+    		List<Coin> withdraw = new ArrayList<>();
     		
-    		for (int i = money.size(); withdraw.getBalance() != amount; i--) {
-    			double possibility = withdraw.getBalance() + money.get(i-1).getValue();
-    			if (possibility <= amount) withdraw.insert(money.get(i-1));
-    			if (i-1 == 0 && withdraw.getBalance() != amount) return null;
+    		for (int i = money.size(); amount != 0; i--) {
+    			if (amount - money.get(i-1).getValue() >= 0) {
+    				amount -= money.get(i-1).getValue();
+    				withdraw.add(money.get(i-1));
+    			}
+    			if (i-1 == 0 && amount != 0) return null;
     		}
     		
-    		Coin[] toRemove = new Coin[withdraw.getCoinList().size()];
-    		withdraw.getCoinList().toArray(toRemove);
+    		Coin[] toRemove = new Coin[withdraw.size()];
+    		withdraw.toArray(toRemove);
     		this.remove(toRemove);
     		
     		return toRemove;
