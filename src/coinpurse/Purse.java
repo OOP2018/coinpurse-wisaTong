@@ -3,8 +3,6 @@ package coinpurse;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO import List, ArrayList, and Collections
-// You will use Collections.sort() to sort the coins
 
 /**
  *  A coin purse contains coins.
@@ -95,28 +93,6 @@ public class Purse {
 	 *    or null if cannot withdraw requested amount.
      */
     public Coin[] withdraw( double amount ) {
-        //TODO don't allow to withdraw amount < 0
-        
-	   /*
-		* See lab sheet for outline of a solution, 
-		* or devise your own solution.
-		* The idea is to be greedy.
-		* Try to withdraw the largest coins possible.
-		* Each time you choose a coin as a candidate for
-		* withdraw, add it to a temporary list and
-		* decrease the amount (remainder) to withdraw.
-		* 
-		* If you reach a point where amountNeededToWithdraw == 0
-		* then you found a solution!
-		* Now, use the temporary list to remove coins
-		* from the money list, and return the temporary
-		* list (as an array).
-		*/
-		
-		// Did we get the full amount?
-		// This code assumes you decrease amount each time you remove a coin.
-    	// Your code might use some other variable for the remaining amount to withdraw.
-		
     	if (amount > 0 && amount <= this.getBalance() && this.getBalance() != 0) {
     		java.util.Collections.sort(money);
     		
@@ -134,13 +110,8 @@ public class Purse {
     		
     		return toRemove;
     	}
-
-		// Success.
-		// Remove the coins you want to withdraw from purse,
-		// and return them as an array.
-		// Use list.toArray( array[] ) to copy a list into an array.
-		// toArray returns a reference to the array itself.
-        return null; //TODO replace this with real code
+    	
+        return null;
 	}
     
     /**
@@ -167,16 +138,7 @@ public class Purse {
      * It can return whatever is a useful description.
      */
     public String toString() {
-        //TODO complete this
     	return money.toString();
     }
     
-    public static void main(String[] args) {
-		Purse purse = new Purse(10);
-		purse.insert(new Coin(20, "BTC"));
-		System.out.println(purse.toString());
-		purse.withdraw(1);
-	}
-
 }
-//TODO When you finish, there should not be any TODO comments, including this one!
