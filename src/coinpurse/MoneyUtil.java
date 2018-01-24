@@ -14,6 +14,14 @@ public class MoneyUtil {
 	public static void sortCoins(List<Coin> coins) {
 		java.util.Collections.sort(coins);		
 	}
+	
+	public static List<Coin> filterByCurrency(List<Coin> coins, String currency) {
+		List<Coin> temp = new ArrayList<>();
+		for (Coin c : coins) {
+			if (c.getCurrency().equals(currency)) temp.add(c);
+		}
+		return temp;
+	}
 
 	public static void main(String[] args) {
 		
@@ -32,5 +40,8 @@ public class MoneyUtil {
 		printCoins(coins);
 		System.out.println();
 		printCoins(coins);
+		
+		System.out.println();
+		printCoins(filterByCurrency(coins, "USD"));
 	}
 }
