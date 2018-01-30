@@ -3,45 +3,66 @@ package coinpurse;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Utility methods for using with list of Valuable item
+ * @author Wisa Powthongchin
+ *
+ */
 public class MoneyUtil {
 	
-	public static void printCoins(List<Coin> coins) {
-		for(Coin coin : coins) {
-			System.out.println(coin);
+	private static ValueComparator valueComparator = new ValueComparator();
+	
+	/**
+	 * print valuable items in list to the console
+	 */
+	public static void printList(List<Valuable> valuable) {
+		for(Valuable v : valuable) {
+			System.out.println(v);
 		}
 	}
 	
-	public static void sortCoins(List<Coin> coins) {
-		java.util.Collections.sort(coins);		
+	/**
+	 * Sort valuable items in list by value !Not by currency value yet!
+	 * @param valuable is a list of valuable items
+	 */
+	public static void sortCoins(List<Valuable> valuable) {
+		java.util.Collections.sort(valuable, valueComparator);;		
 	}
 	
-	public static List<Coin> filterByCurrency(List<Coin> coins, String currency) {
-		List<Coin> temp = new ArrayList<>();
-		for (Coin c : coins) {
-			if (c.getCurrency().equals(currency)) temp.add(c);
+	/**
+	 * Filter out every other valuable items that have different currency with given one.
+	 * @param v is a list of valuable items
+	 * @param currency is a given string value of currency you want to filter
+	 * @return list of valuable items only with given currency
+	 */
+	public static List<Valuable> filterByCurrency(List<Valuable> v, String currency) {
+		List<Valuable> temp = new ArrayList<>();
+		for (Valuable item : v) {
+			if (item.getCurrency().equals(currency)) temp.add(item);
 		}
 		return temp;
 	}
 
 	public static void main(String[] args) {
 		
-		List<Coin> coins = new ArrayList<>();
+		List<Valuable> list = new ArrayList<>();
 		
-		coins.add(new Coin(10.0, "Baht"));
-		coins.add(new Coin(2.0, "Baht"));
-		coins.add(new Coin(5.0, "USD"));
-		coins.add(new Coin(20.0, "USD"));
-		coins.add(new Coin(0.5, "Baht"));
-		coins.add(new Coin(5.0, "Baht"));
-		coins.add(new Coin(1.0, "Baht"));
+		list.add(new Coin(10.0, "Baht"));
+		list.add(new Coin(2.0, "Baht"));
+		list.add(new BankNote(5.0, "USD"));
+		list.add(new BankNote(20.0, "USD"));
+		list.add(new Coin(0.5, "Baht"));
+		list.add(new Coin(5.0, "Baht"));
+		list.add(new Coin(1.0, "Baht"));
 		
-		sortCoins(coins);
 		
-		printCoins(coins);
+		sortCoins(list);
+		
+		printList(list);
 		System.out.println();
-		printCoins(coins);
+		printList(list);
 		
 		System.out.println();
-		printCoins(filterByCurrency(coins, "USD"));
+		printList(filterByCurrency(list, "USD"));
 	}
 }

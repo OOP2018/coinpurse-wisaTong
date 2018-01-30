@@ -13,7 +13,12 @@ import java.util.List;
  */
 public class Purse {
     /** Collection of objects in the purse. */
-    private List<Coin> money;
+    private List<Valuable> money;
+    
+    /**
+     * Comparator for sorting Valuable objects.
+     */
+    private ValueComparator valueComparator = new ValueComparator();
 	
     /** Capacity is maximum number of items the purse can hold.
      *  Capacity is set when the purse is created and cannot be changed.
@@ -26,13 +31,13 @@ public class Purse {
      */
     public Purse( int capacity ) {
     	this.capacity = capacity;
-    	money = new ArrayList<Coin>(capacity);
+    	money = new ArrayList<>(capacity);
     }
 
     /**
-     * Count and return the number of coins in the purse.
-     * This is the number of coins, not their value.
-     * @return the number of coins in the purse
+     * Count and return the number of valuable in the purse.
+     * This is the number of valuable, not their value.
+     * @return the number of valuable in the purse
      */
     public int count() { return money.size(); }
     
@@ -43,15 +48,15 @@ public class Purse {
     public double getBalance() {
     	double balance = 0;
     	
-    	for (Coin coin : money) {
-    		balance += coin.getValue();
+    	for (Valuable valuable : money) {
+    		balance += valuable.getValue();
     	}
 		return balance; 
 	}
 
     
     /**
-     * Return the capacity of the coin purse.
+     * Return the capacity of the purse.
      * @return the capacity
      */
     public int getCapacity() { 
@@ -70,15 +75,15 @@ public class Purse {
     }
 
     /** 
-     * Insert a coin into the purse.
-     * The coin is only inserted if the purse has space for it
-     * and the coin has positive value.  No worthless coins!
-     * @param coin is a Coin object to insert into purse
-     * @return true if coin inserted, false if can't insert
+     * Insert a valuable item into the purse.
+     * The valuable item is only inserted if the purse has space for it
+     * and the valuable item has positive value.
+     * @param valuable is a valuable object to insert into purse
+     * @return true if valuable item inserted, false if can't insert
      */
-    public boolean insert( Coin coin ) {
-    	if(!isFull() && coin.getValue() > 0) {
-    		money.add(coin);
+    public boolean insert( Valuable valuable ) {
+    	if(!isFull() && valuable.getValue() > 0) {
+    		money.add(valuable);
     		return true;
     	}
         return false;
@@ -86,17 +91,17 @@ public class Purse {
     
     /**  
      *  Withdraw the requested amount of money.
-     *  Return an array of Coins withdrawn from purse,
+     *  Return an array of valuable items withdrawn from purse,
      *  or return null if cannot withdraw the amount requested.
      *  @param amount is the amount to withdraw
-     *  @return array of Coin objects for money withdrawn, 
+     *  @return array of Valuable objects for money withdrawn, 
 	 *    or null if cannot withdraw requested amount.
      */
-    public Coin[] withdraw( double amount ) {
+    public Valuable[] withdraw( double amount ) {
     	if (amount > 0 && amount <= this.getBalance() && this.getBalance() != 0) {
-    		java.util.Collections.sort(money);
+    		java.util.Collections.sort(money, valueComparator);
     		
-    		List<Coin> withdraw = new ArrayList<>();
+    		List<Valuable> withdraw = new ArrayList<>();
     		
     		for (int i = money.size(); amount != 0; i--) {
     			if (amount - money.get(i-1).getValue() >= 0) {
@@ -106,7 +111,7 @@ public class Purse {
     			if (i-1 == 0 && amount != 0) return null;
     		}
     		
-    		Coin[] toRemove = new Coin[withdraw.size()];
+    		Valuable[] toRemove = new Valuable[withdraw.size()];
     		withdraw.toArray(toRemove);
     		this.remove(toRemove);
     		
@@ -117,21 +122,21 @@ public class Purse {
 	}
     
     /**
-     * Remove set of coins from purse.
+     * Remove set of valuable items from purse.
      * This method is reserved for inner use only.
-     * @param remove Array of coins you want to remove from purse.
+     * @param remove Array of valuable item you want to remove from purse.
      */
-    private void remove(Coin[] remove) {
-    	for (Coin coin : remove) {
-    		money.remove(coin);
+    private void remove(Valuable[] remove) {
+    	for (Valuable valuable : remove) {
+    		money.remove(valuable);
     	}
     }
     
     /**
      * 
-     * @return List of all Coin in the purse.
+     * @return List of all items in the purse.
      */
-    private List<Coin> getCoinList() {
+    private List<Valuable> getItemList() {
     	return money;
     }
   

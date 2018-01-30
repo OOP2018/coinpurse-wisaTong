@@ -5,7 +5,7 @@ package coinpurse;
  * @author Wisa Powthongchin
  *
  */
-public class Coin implements Comparable<Coin> {
+public class Coin implements Comparable<Coin>, Valuable {
 
 	private double value;
 	private String currency;
@@ -25,6 +25,7 @@ public class Coin implements Comparable<Coin> {
 	 * Get value of a coin.
 	 * @return value of a coin in double.
 	 */
+	@Override
 	public double getValue() {
 		return value;
 	}
@@ -33,6 +34,7 @@ public class Coin implements Comparable<Coin> {
 	 * Get currency type of coin.
 	 * @return String value of currency type.
 	 */
+	@Override
 	public String getCurrency() {
 		return currency;
 	}
