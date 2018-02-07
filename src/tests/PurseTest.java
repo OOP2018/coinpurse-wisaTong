@@ -95,6 +95,14 @@ public class PurseTest {
     	assertTrue( purse.insert(coin2));
     	//count
     	assertEquals(5, purse.count());
+    	//test get balance
+    	assertEquals(100, purse.getBalance(), TOL);
+    	//test withdraw
+    	purse.withdraw(20);
+    	assertEquals(80, purse.getBalance(),TOL);
+    	purse.withdraw(20);
+    	assertEquals(60, purse.getBalance(), TOL);
+    	
     	
     }
 

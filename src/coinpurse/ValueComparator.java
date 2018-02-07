@@ -6,9 +6,9 @@ public class ValueComparator implements Comparator<Valuable> {
 
 	@Override
 	public int compare(Valuable a, Valuable b) {
-		if (a.getValue() < b.getValue()) return -1;
-		else if (a.getValue() > b.getValue()) return 1;
-		return 0;
+		if(a.getCurrency().equals(b.getCurrency())) {
+			return (int) (a.getValue() - b.getValue());
+		} else return a.getCurrency().compareTo(b.getCurrency());
 	}
 	
 }

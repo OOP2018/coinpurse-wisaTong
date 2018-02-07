@@ -27,7 +27,7 @@ public class Purse {
     
     /** 
      *  Create a purse with a specified capacity.
-     *  @param capacity is maximum number of coins you can put in purse.
+     *  @param capacity is maximum number of valuable objects you can put in purse.
      */
     public Purse( int capacity ) {
     	this.capacity = capacity;
