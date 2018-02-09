@@ -5,10 +5,7 @@ package coinpurse;
  * @author Wisa Powthongchin
  *
  */
-public class Coin implements Comparable<Coin>, Valuable {
-
-	private double value;
-	private String currency;
+public class Coin extends Money {
 	
 	/**
 	 * Create coin object that has value and currency.
@@ -16,52 +13,13 @@ public class Coin implements Comparable<Coin>, Valuable {
 	 * @param currency is String value specify currency type.
 	 */
 	public Coin(double value, String currency) {
-		if (value < 0) throw new IllegalArgumentException("Value cannot be negative");
-		this.value = value;
-		this.currency = currency;
+		super(value, currency);
 	}
 	
-	/** 
-	 * Get value of a coin.
-	 * @return value of a coin in double.
-	 */
-	@Override
-	public double getValue() {
-		return value;
-	}
-	
-	/**
-	 * Get currency type of coin.
-	 * @return String value of currency type.
-	 */
-	@Override
-	public String getCurrency() {
-		return currency;
-	}
-	
-	/**
-	 * Compare this coin to other coin object.
-	 */
-	public int compareTo(Coin coin) {
-		if (this.getValue() < coin.getValue()) return -1;
-		else if (this.getValue() > coin.getValue()) return 1;
-		return 0;
-	}
-	
-	/** Ordinary equals method */
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null) return false;
-		if (obj.getClass() != this.getClass()) return false;
-		
-		Coin other = (Coin) obj;
-		
-		return this.getCurrency().equals(other.getCurrency()) && this.getValue() == other.getValue();
-	}
-	
+	/** simple toString */
 	@Override
 	public String toString() {
-		return String.format("%.2f-%s", value, currency);
+		return String.format("%.2f-%s", this.getValue(), this.getCurrency());
 		
 	}
 }

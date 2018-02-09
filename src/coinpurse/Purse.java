@@ -122,6 +122,47 @@ public class Purse {
 	}
     
     /**
+     * same as withdraw( double amount ) but withdraw the amount with
+     * the same currency as Valuable parameter
+     * @param Valuable object to withdraw
+     * @return array of Valuable objects for money withdrawn, 
+	 * or null if cannot withdraw requested amount. 
+     */
+    public Valuable[] withdraw(Valuable amount) {
+    	double value = amount.getValue();
+    	if(amount == null) return null;
+    	if (value > 0 && value <= this.getBalance() && this.getBalance() != 0) {
+    		java.util.Collections.sort(money, valueComparator);
+    		
+    		List<Valuable> withdraw = new ArrayList<>();
+    		List<Valuable> temp = new ArrayList<>();
+    		final String currency = amount.getCurrency();
+			
+    		for (Valuable valuable : money) {
+    			if(valuable.getCurrency().equals(currency)) {
+    				temp.add(valuable);
+    			}
+			}
+
+    		for (int i = temp.size()-1; value != 0; i--) {
+    			if (value - temp.get(i).getValue() >= 0) {
+    				value -= temp.get(i).getValue();
+    				withdraw.add(temp.get(i));
+    			}
+    			if (i == 0 && value != 0) return null;
+    		}
+    		
+    		Valuable[] toRemove = new Valuable[withdraw.size()];
+    		withdraw.toArray(toRemove);
+    		this.remove(toRemove);
+    		
+    		return toRemove;
+    	}
+    	
+        return null;
+    }
+    
+    /**
      * Remove set of valuable items from purse.
      * This method is reserved for inner use only.
      * @param remove Array of valuable item you want to remove from purse.

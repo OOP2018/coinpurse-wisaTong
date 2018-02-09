@@ -1,6 +1,6 @@
 package coinpurse;
 
-public interface Valuable {
+public interface Valuable extends Comparable<Valuable> {
 
 	public double getValue();
 	

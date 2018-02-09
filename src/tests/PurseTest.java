@@ -42,7 +42,7 @@ public class PurseTest {
 	}
     
     /** BankNote version of {@link #makeCoin(double)}*/
-    private BankNote makeNote(double value) {
+    private Money makeNote(double value) {
     	return new BankNote(value, CURRENCY);
     }
 
@@ -79,9 +79,9 @@ public class PurseTest {
     	Purse purse = new Purse(5);
     	Coin coin1 = makeCoin(5);
     	Coin coin2 = makeCoin(5);
-    	BankNote note1 = makeNote(20);
-    	BankNote note2 = makeNote(20);
-    	BankNote note3 = makeNote(50);
+    	Money note1 = makeNote(20);
+    	Money note2 = makeNote(20);
+    	Money note3 = makeNote(50);
      	//test equals
     	assertTrue(coin1.equals(coin2));
     	assertTrue(note1.equals(note2));
@@ -195,6 +195,22 @@ public class PurseTest {
 		assertEquals(0, purse.getBalance(), TOL );
 	}
 	
+	/** Add multiple currency then withdraw only one currency */
+	@Test(timeout=1000)
+	public void testWithdrawValuableCurrency() {
+		Valuable coin1 = makeCoin(5);
+		Valuable coin2 = makeCoin(10);
+		Valuable coin3 = new Coin(1, "Baht");
+		Purse purse = new Purse(3);
+		
+		purse.insert(coin1);
+		purse.insert(coin2);
+		purse.insert(coin3);
+		
+		purse.withdraw(new Money(15, "BTC"));
+		assertEquals(1, purse.getBalance(), TOL);
+	}
+	
 
 	/** Withdraw full amount in purse, using varying numbers of objects. */
 	@Test(timeout=1000)
@@ -238,6 +254,14 @@ public class PurseTest {
 		assertNull( purse.withdraw(21) );
 		purse.insert( makeCoin(20) ); // now it has 20 + 20
 		assertNull( purse.withdraw(30) );
+	}
+	
+	@Test(timeout = 100)
+	public void testEquals() {
+		assertTrue(makeNote(20).equals(makeNote(20)));
+		assertTrue(makeCoin(5).equals(makeCoin(5)));
+		assertFalse(makeCoin(10).equals(makeNote(10)));
+		assertFalse(makeNote(10).equals(makeCoin(10)));
 	}
 	
 	/**
