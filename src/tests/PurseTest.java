@@ -195,7 +195,7 @@ public class PurseTest {
 		assertEquals(0, purse.getBalance(), TOL );
 	}
 	
-	/** Add multiple currency then withdraw only one currency */
+	/** Add multiple currency then withdraw only one currency. */
 	@Test(timeout=1000)
 	public void testWithdrawValuableCurrency() {
 		Valuable coin1 = makeCoin(5);
