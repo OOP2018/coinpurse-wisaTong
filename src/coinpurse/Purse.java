@@ -89,44 +89,24 @@ public class Purse {
         return false;
     }
     
+    /**
+     * same as wtihdraw(Valuable amount) but with default currecy "Baht"
+     * @param amount is a double value of money want to withdraw
+     * @return array of Valuable objects for money withdrawn, 
+	 *    or null if cannot withdraw requested amount.
+     */
+    public Valuable[] withdraw( double amount ) {
+    	return withdraw(new Money(amount, "Baht"));
+	}
+    
     /**  
-     *  Withdraw the requested amount of money.
+     *  Withdraw the requested amount of money with same currency as
+     *  given valuable object.
      *  Return an array of valuable items withdrawn from purse,
      *  or return null if cannot withdraw the amount requested.
      *  @param amount is the amount to withdraw
      *  @return array of Valuable objects for money withdrawn, 
 	 *    or null if cannot withdraw requested amount.
-     */
-    public Valuable[] withdraw( double amount ) {
-    	if (amount > 0 && amount <= this.getBalance() && this.getBalance() != 0) {
-    		java.util.Collections.sort(money, valueComparator);
-    		
-    		List<Valuable> withdraw = new ArrayList<>();
-    		
-    		for (int i = money.size(); amount != 0; i--) {
-    			if (amount - money.get(i-1).getValue() >= 0) {
-    				amount -= money.get(i-1).getValue();
-    				withdraw.add(money.get(i-1));
-    			}
-    			if (i-1 == 0 && amount != 0) return null;
-    		}
-    		
-    		Valuable[] toRemove = new Valuable[withdraw.size()];
-    		withdraw.toArray(toRemove);
-    		this.remove(toRemove);
-    		
-    		return toRemove;
-    	}
-    	
-        return null;
-	}
-    
-    /**
-     * same as withdraw( double amount ) but withdraw the amount with
-     * the same currency as Valuable parameter
-     * @param Valuable object to withdraw
-     * @return array of Valuable objects for money withdrawn, 
-	 * or null if cannot withdraw requested amount. 
      */
     public Valuable[] withdraw(Valuable amount) {
     	double value = amount.getValue();
