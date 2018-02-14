@@ -1,4 +1,4 @@
-package tests;
+package coinpurse.tests;
 
 import static java.lang.System.out;
 import static org.junit.Assert.*;
