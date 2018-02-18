@@ -2,6 +2,8 @@ package coinpurse;
  
 import java.util.Scanner;
 
+import factory.MoneyFactory;
+
 /** 
  * User Interface for the Coin Purse. 
  * This class provides simple interactive dialog for inserting
@@ -9,6 +11,8 @@ import java.util.Scanner;
  * balance.
  */
 public class ConsoleDialog {
+	
+	private static final MoneyFactory f = MoneyFactory.getInstance();
 	// default currency for this dialog
 	public static final String CURRENCY = "Baht";
     // use a single java.util.Scanner object for reading all input
@@ -125,8 +129,7 @@ public class ConsoleDialog {
     
     /** Make a Coin (or BankNote or whatever) using requested value. */
     private Valuable makeMoney(double value) {
-    	if (value >= 20) return new BankNote(value, CURRENCY);
-    	return new Coin(value, CURRENCY);
+    	return f.createMoney(value);
     }
 
 }

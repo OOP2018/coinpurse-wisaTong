@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import coinpurse.*;
+import factory.MoneyFactory;
 
 /**
  * Test the Purse using JUnit.
@@ -25,8 +26,9 @@ import coinpurse.*;
 public class PurseTest {
 	/** tolerance for comparing two double values */
 	private static final double TOL = 1.0E-6;
-	private static final String CURRENCY = "BTC";
+	private static final String CURRENCY = "Baht";
 	
+	private static final MoneyFactory f = MoneyFactory.getInstance();
     /**
      * Sets up the test fixture.
      * Called before every test method.
@@ -43,7 +45,7 @@ public class PurseTest {
     
     /** BankNote version of {@link #makeCoin(double)}*/
     private Money makeNote(double value) {
-    	return new BankNote(value, CURRENCY);
+    	return (Money) f.createMoney(value);
     }
 
     /** Easy test that the Purse constructor is working. */
@@ -200,14 +202,14 @@ public class PurseTest {
 	public void testWithdrawValuableCurrency() {
 		Valuable coin1 = makeCoin(5);
 		Valuable coin2 = makeCoin(10);
-		Valuable coin3 = new Coin(1, "Baht");
+		Valuable coin3 = new Coin(1, "BTC");
 		Purse purse = new Purse(3);
 		
 		purse.insert(coin1);
 		purse.insert(coin2);
 		purse.insert(coin3);
 		
-		purse.withdraw(new Money(15, "BTC"));
+		purse.withdraw(new Money(15, "Baht"));
 		assertEquals(1, purse.getBalance(), TOL);
 	}
 	
@@ -260,8 +262,6 @@ public class PurseTest {
 	public void testEquals() {
 		assertTrue(makeNote(20).equals(makeNote(20)));
 		assertTrue(makeCoin(5).equals(makeCoin(5)));
-		assertFalse(makeCoin(10).equals(makeNote(10)));
-		assertFalse(makeNote(10).equals(makeCoin(10)));
 	}
 	
 	/**

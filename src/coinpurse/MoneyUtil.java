@@ -49,8 +49,8 @@ public class MoneyUtil {
 		
 		list.add(new Coin(10.0, "Baht"));
 		list.add(new Coin(2.0, "Baht"));
-		list.add(new BankNote(5.0, "USD"));
-		list.add(new BankNote(20.0, "USD"));
+		list.add(new BankNote(5.0, "USD", 1234));
+		list.add(new BankNote(20.0, "USD", 123));
 		list.add(new Coin(0.5, "Baht"));
 		list.add(new Coin(5.0, "Baht"));
 		list.add(new Coin(1.0, "Baht"));
