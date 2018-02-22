@@ -28,10 +28,7 @@ public class MalayMoneyFactory extends MoneyFactory{
 	@Override
 	public Valuable createMoney(double value) {
 		if (!check(value)) throw new IllegalArgumentException(String.format("Malaysia doesn't have %.2f Ringgit money", value));
-		if (value >= 1) {
-			serial++;
-			return new BankNote(value, currency, serial-1);
-		}
+		if (value >= 1) return new BankNote(value, currency, serial++);
 		return new Coin(value, currency);
 	}
 	

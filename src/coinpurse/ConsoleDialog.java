@@ -129,7 +129,12 @@ public class ConsoleDialog {
     
     /** Make a Coin (or BankNote or whatever) using requested value. */
     private Valuable makeMoney(double value) {
-    	return f.createMoney(value);
+    	try {
+			return f.createMoney(value);
+		} catch (IllegalArgumentException e) {
+			System.err.println(e.getMessage());
+			return null;
+		}
     }
 
 }

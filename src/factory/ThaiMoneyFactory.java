@@ -28,10 +28,7 @@ public class ThaiMoneyFactory extends MoneyFactory {
 	@Override
 	public Valuable createMoney(double value) {
 		if (!check(value)) throw new IllegalArgumentException(String.format("Thai doesn't have %.2f Baht money", value));
-		if (value >= 20) {
-			serial++;
-			return new BankNote(value, currency, serial-1);
-		}
+		if (value >= 20) return new BankNote(value, currency, serial++);
 		return new Coin(value, currency);
 	}
 }
