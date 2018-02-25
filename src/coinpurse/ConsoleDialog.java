@@ -87,6 +87,7 @@ public class ConsoleDialog {
         while( scanline.hasNextDouble() ) {
             double value = scanline.nextDouble();
             Valuable valuable = makeMoney(value);
+            if (valuable == null) continue;
             System.out.printf("Deposit %s... ", valuable.toString() );
             boolean ok = purse.insert(valuable);
             System.out.println( (ok? "ok" : "FAILED") );
