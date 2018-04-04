@@ -3,6 +3,10 @@ package coinpurse;
 import java.util.ArrayList;
 import java.util.List;
 
+import coinpurse.strategy.GreedyWithdraw;
+import coinpurse.strategy.RecursionWithdraw;
+import coinpurse.strategy.WithdrawStrategy;
+
 
 /**
  *  A coin purse contains coins.
@@ -25,12 +29,18 @@ public class Purse {
      */
     private final int capacity;
     
+    /**
+     * Strategy for withdrawing valuables
+     */
+    private WithdrawStrategy strat;
+    
     /** 
      *  Create a purse with a specified capacity.
      *  @param capacity is maximum number of valuable objects you can put in purse.
      */
     public Purse( int capacity ) {
     	this.capacity = capacity;
+    	strat = new RecursionWithdraw();
     	money = new ArrayList<>(capacity);
     }
 
@@ -109,37 +119,12 @@ public class Purse {
 	 *    or null if cannot withdraw requested amount.
      */
     public Valuable[] withdraw(Valuable amount) {
-    	double value = amount.getValue();
-    	if(amount == null) return null;
-    	if (value > 0 && value <= this.getBalance() && this.getBalance() != 0) {
-    		java.util.Collections.sort(money, valueComparator);
-    		
-    		List<Valuable> withdraw = new ArrayList<>();
-    		List<Valuable> temp = new ArrayList<>();
-    		final String currency = amount.getCurrency();
-			
-    		for (Valuable valuable : money) {
-    			if(valuable.getCurrency().equals(currency)) {
-    				temp.add(valuable);
-    			}
-			}
-
-    		for (int i = temp.size()-1; value != 0; i--) {
-    			if (value - temp.get(i).getValue() >= 0) {
-    				value -= temp.get(i).getValue();
-    				withdraw.add(temp.get(i));
-    			}
-    			if (i == 0 && value != 0) return null;
-    		}
-    		
-    		Valuable[] toRemove = new Valuable[withdraw.size()];
-    		withdraw.toArray(toRemove);
-    		this.remove(toRemove);
-    		
-    		return toRemove;
-    	}
+    	List<Valuable> list = strat.withdraw(amount, money);
+    	remove(list);
     	
-        return null;
+    	Valuable[] removed = new Valuable[list.size()];
+    	list.toArray(removed);
+    	return removed;
     }
     
     /**
@@ -147,7 +132,7 @@ public class Purse {
      * This method is reserved for inner use only.
      * @param remove Array of valuable item you want to remove from purse.
      */
-    private void remove(Valuable[] remove) {
+    private void remove(List<Valuable> remove) {
     	for (Valuable valuable : remove) {
     		money.remove(valuable);
     	}
