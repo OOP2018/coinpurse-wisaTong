@@ -64,6 +64,7 @@ public class WithdrawTest {
 	public void testWithdrawEverything() {
 		addToList(5, 2, 2, 2);
 		List<Valuable> temp = strat.withdraw(mkCoin(11), list);
+		System.out.println(temp);
 		assertTrue(temp.size() == list.size());
 		
 		//another test to be sure
@@ -75,7 +76,7 @@ public class WithdrawTest {
 	
 	@Test (expected =  IllegalArgumentException.class)
 	public void testOverWithdraw() {
-		addToList(1, 2, 3 , 4);
+		addToList(1, 2, 3, 4);
 		List<Valuable> temp = strat.withdraw(mkCoin(11), list); //should throw exception
 	}
 	
