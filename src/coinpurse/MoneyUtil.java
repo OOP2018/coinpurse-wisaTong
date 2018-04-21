@@ -15,7 +15,7 @@ public class MoneyUtil {
 	/**
 	 * print valuable items in list to the console
 	 */
-	public static void printList(List<Valuable> valuable) {
+	public static void printList(List<? extends Valuable> valuable) {
 		for(Valuable v : valuable) {
 			System.out.println(v);
 		}
@@ -25,7 +25,7 @@ public class MoneyUtil {
 	 * Sort valuable items in list by value !Not by currency value yet!
 	 * @param valuable is a list of valuable items
 	 */
-	public static void sortCoins(List<Valuable> valuable) {
+	public static void sortMoney(List<? extends Valuable> valuable) {
 		java.util.Collections.sort(valuable, valueComparator);;		
 	}
 	
@@ -35,14 +35,29 @@ public class MoneyUtil {
 	 * @param currency is a given string value of currency you want to filter
 	 * @return list of valuable items only with given currency
 	 */
-	public static List<Valuable> filterByCurrency(List<Valuable> v, String currency) {
-		List<Valuable> temp = new ArrayList<>();
-		for (Valuable item : v) {
+	public static <E extends Valuable> List<E> filterByCurrency(List<E> v, String currency) {
+		List<E> temp = new ArrayList<>();
+		for (E item : v) {
 			if (item.getCurrency().equals(currency)) temp.add(item);
 		}
 		return temp;
 	}
 
+	/**
+	 * Return the larger argument, based on sort order, using 
+	 * the objects' own compareTo method for comparing.
+	 * @param args one or more Comparable objects to compare.
+	 * @return the argument that would be last if sorted the elements.
+	 * @throws IllegalArgumentException if no arguments given.
+	 */
+	public static <E extends Comparable<? super E>> E max(E... args) {
+		E max = args[0];
+		for (E element : args) {
+			max = (element.compareTo(max) > 0) ? element : max;
+		}
+		return max;
+	}
+	
 	public static void main(String[] args) {
 		
 		List<Valuable> list = new ArrayList<>();
@@ -55,8 +70,10 @@ public class MoneyUtil {
 		list.add(new Coin(5.0, "Baht"));
 		list.add(new Coin(1.0, "Baht"));
 		
+		System.out.println(max("dog", "zebra", "cat"));
+		System.out.println(max(2,3,4));
 		
-		sortCoins(list);
+		sortMoney(list);
 		
 		printList(list);
 		System.out.println();
